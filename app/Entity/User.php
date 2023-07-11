@@ -106,7 +106,7 @@ class User implements UserInterface
 
     public function addTransaction(Transaction $transaction): User
     {
-        $this->transactions->add($transaction);
+        //$this->transactions->add($transaction);
 
         return $this;
     }
