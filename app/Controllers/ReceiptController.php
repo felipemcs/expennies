@@ -44,6 +44,8 @@ class ReceiptController
 
         $this->receiptService->create($transaction, $filename, $randomFilename, $file->getClientMediaType());
 
+        $this->receiptService->flush();
+
         return $response;
     }
 
@@ -92,6 +94,8 @@ class ReceiptController
         $this->filesystem->delete('receipts/' . $receipt->getStorageFilename());
 
         $this->receiptService->delete($receipt);
+
+        $this->receiptService->flush();
 
         return $response;
     }
