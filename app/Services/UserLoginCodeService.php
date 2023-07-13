@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Services;
 
 use App\Contracts\EntityManagerServiceInterface;
+use App\Contracts\UserInterface;
 use App\Entity\User;
 use App\Entity\UserLoginCode;
 
@@ -27,5 +28,35 @@ class UserLoginCodeService
         $this->entityManagerService->sync($userLoginCode);
 
         return $userLoginCode;
+    }
+
+    public function verify(UserInterface $user, string $code): bool
+    {
+        $userLoginCode = $this->entityManagerService->getRepository(UserLoginCode::class)->findOneBy(
+            ['user' => $user, 'code' => $code, 'isActive' => true]
+        );
+
+        if (! $userLoginCode) {
+            return false;
+        }
+
+        if ($userLoginCode->getExpiration() <= new \DateTime()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function deactivateAllActiveCodes(User $user): void
+    {
+        $this->entityManagerService->getRepository(UserLoginCode::class)
+            ->createQueryBuilder('c')
+            ->update()
+            ->set('c.isActive', 0)
+            ->where('c.user = :user')
+            ->andWhere('c.isActive = 1')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
     }
 }
