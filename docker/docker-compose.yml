@@ -37,9 +37,10 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3306:3306"
+      - "3307:3306"
   mailhog:
     container_name: expennies-mailhog
+    platform: linux/amd64
     image: mailhog/mailhog
     restart: always
     logging:
