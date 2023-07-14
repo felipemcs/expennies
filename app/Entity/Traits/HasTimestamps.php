@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace App\Entity\Traits;
 
-use App\Entity\Category;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\PrePersist;
@@ -33,7 +32,7 @@ trait HasTimestamps
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): Category
+    public function setCreatedAt(\DateTime $createdAt): static
     {
         $this->createdAt = $createdAt;
 
@@ -45,7 +44,7 @@ trait HasTimestamps
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): Category
+    public function setUpdatedAt(\DateTime $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
 
